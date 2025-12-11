@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Profile</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            padding: 50px 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+            color: #333;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .user-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .user-info p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .user-email {
+            color: #333;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .error-message {
+            background: #ffe6e6;
+            border: 1px solid #ffb3b3;
+            color: #b30000;
+            padding: 12px 14px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-input,
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .form-input:focus,
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .logout-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .logout-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .logout-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Complete Your Profile</h2>
+    <p class="subtitle">Just a few more details to get started</p>
+
+    {% if error %}
+        <div class="error-message">{{ error }}</div>
+    {% endif %}
+
+    <div class="user-info">
+        <p>Logged in as:</p>
+        <p class="user-email">{{ user.email }}</p>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="company_name">Company Name *</label>
+            <input 
+                type="text" 
+                id="company_name" 
+                name="company_name" 
+                class="form-input"
+                placeholder="Enter your company name"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="company_size">Company Size *</label>
+            <select 
+                id="company_size" 
+                name="company_size" 
+                class="form-input"
+                required
+            >
+                <option value="">Select company size</option>
+                <option value="<50">Less than 50</option>
+                <option value="50-100">50 - 100</option>
+                <option value="100-500">100 - 500</option>
+                <option value=">500">More than 500</option>
+            </select>
+        </div>
+
+        <button type="submit" class="submit-btn">Complete Profile</button>
+    </form>
+
+    <div class="logout-link">
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In / Sign Up</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background: white;
+            padding: 50px 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+            color: #333;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .error-message {
+            background: #ffe6e6;
+            border: 1px solid #ffb3b3;
+            color: #b30000;
+            padding: 12px 14px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .success-message {
+            background: #e6ffe6;
+            border: 1px solid #b3ffb3;
+            color: #006600;
+            padding: 12px 14px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-input,
+        input[type="email"],
+        input[type="password"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .form-input:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .google-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 12px;
+            background: white;
+            border: 1px solid #dcdcdc;
+            border-radius: 8px;
+            font-size: 15px;
+            color: #444;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 20px;
+            transition: background 0.2s;
+        }
+
+        .google-btn:hover {
+            background: #f8f8f8;
+        }
+
+        .google-btn img {
+            height: 20px;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #ddd;
+        }
+
+        .divider span {
+            margin: 0 12px;
+        }
+
+        .toggle-mode {
+            text-align: center;
+            margin-top: 25px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .toggle-mode a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .toggle-mode a:hover {
+            text-decoration: underline;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .form-error {
+            color: #b30000;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .errorlist {
+            list-style: none;
+            padding: 0;
+            color: #b30000;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .errorlist li {
+            color: #b30000;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    {% if error %}
+        <div class="error-message">{{ error }}</div>
+    {% endif %}
+
+    <!-- LOGIN FORM -->
+    <form method="POST" id="loginForm" class="{% if mode == 'signup' %}hidden{% endif %}">
+        {% csrf_token %}
+        <input type="hidden" name="login_submit" value="1">
+        
+        <h2>Try Dkube Solutions</h2>
+        <p class="subtitle">Sign in to your account</p>
+
+        <!-- Google Login Button -->
+        <a class="google-btn" href="/accounts/google/login/?process=login">
+            <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google">
+            Sign in with Google
+        </a>
+
+        <div class="divider"><span>OR</span></div>
+
+        <div class="form-group">
+            <label for="id_email">Email Address</label>
+            {{ login_form.email }}
+            {% if login_form.email.errors %}
+                <div class="form-error">{{ login_form.email.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="id_password">Password</label>
+            {{ login_form.password }}
+            {% if login_form.password.errors %}
+                <div class="form-error">{{ login_form.password.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="submit-btn">Sign In</button>
+
+        <div class="toggle-mode">
+            Don't have an account? <a onclick="toggleMode('signup')">Sign Up</a>
+        </div>
+    </form>
+
+    <!-- SIGNUP FORM -->
+    <form method="POST" id="signupForm" class="{% if mode != 'signup' %}hidden{% endif %}">
+        {% csrf_token %}
+        <input type="hidden" name="signup_submit" value="1">
+        
+        <h2>Create Account</h2>
+        <p class="subtitle">Join us with your workspace email</p>
+
+        <div class="form-group">
+            <label for="id_signup_email">Email Address</label>
+            {{ signup_form.email }}
+            {% if signup_form.email.errors %}
+                <div class="form-error">{{ signup_form.email.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="id_password">Password</label>
+            {{ signup_form.password }}
+            {% if signup_form.password.errors %}
+                <div class="form-error">{{ signup_form.password.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="id_password_confirm">Confirm Password</label>
+            {{ signup_form.password_confirm }}
+            {% if signup_form.password_confirm.errors %}
+                <div class="form-error">{{ signup_form.password_confirm.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="id_company_name">Company Name</label>
+            {{ signup_form.company_name }}
+            {% if signup_form.company_name.errors %}
+                <div class="form-error">{{ signup_form.company_name.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="id_company_size">Company Size</label>
+            {{ signup_form.company_size }}
+            {% if signup_form.company_size.errors %}
+                <div class="form-error">{{ signup_form.company_size.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="submit-btn">Create Account</button>
+
+        <div class="toggle-mode">
+            Already have an account? <a onclick="toggleMode('login')">Sign In</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    function toggleMode(mode) {
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+
+        if (mode === 'signup') {
+            loginForm.classList.add('hidden');
+            signupForm.classList.remove('hidden');
+            window.history.replaceState({}, '', '?mode=signup');
+        } else {
+            signupForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+            window.history.replaceState({}, '', '?mode=login');
+        }
+    }
+</script>
+
+</body>
+</html>

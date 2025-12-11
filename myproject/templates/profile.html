@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Solutions</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .navbar {
+            background: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-left {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .user-email {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .company-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .navbar-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .credits-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .credits-number {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .logout-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .logout-btn:hover {
+            background: #ff5252;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .dashboard-header {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-header h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .dashboard-header p {
+            color: #666;
+            font-size: 15px;
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .app-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            border-left: 4px solid;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .app-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .app-icon {
+            font-size: 40px;
+            line-height: 1;
+        }
+
+        .app-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .app-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        .app-action {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: transform 0.2s;
+            align-self: flex-start;
+        }
+
+        .app-action:hover {
+            transform: scale(1.05);
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .empty-state {
+            background: white;
+            padding: 60px 40px;
+            border-radius: 12px;
+            text-align: center;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .navbar-left {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .navbar-right {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .apps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-header {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<div class="navbar">
+    <div class="navbar-left">
+        <div class="logo">🚀 Dashboard</div>
+        <div class="user-info">
+            <div class="user-email">{{ user.email }}</div>
+            <div class="company-name">{{ profile.company_name }}</div>
+        </div>
+    </div>
+    <div class="navbar-right">
+        <div class="credits-badge">
+            💳 <span class="credits-number">{{ credits.available_credits }}</span> Credits
+        </div>
+        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+    </div>
+</div>
+
+<!-- Main Container -->
+<div class="container">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <h1>Welcome, {{ user.first_name|default:user.email }}!</h1>
+        <p>Explore our intelligent solutions to enhance your productivity</p>
+    </div>
+
+    <!-- Apps Grid -->
+    {% if apps %}
+        <div class="apps-grid">
+            {% for app in apps %}
+                <a href="{{ app.url }}" class="app-card" style="border-left-color: {{ app.color }};">
+                    <div class="app-icon">{{ app.icon }}</div>
+                    <div class="app-name">{{ app.name }}</div>
+                    <div class="app-description">{{ app.description }}</div>
+                    <button type="button" class="app-action">Launch App →</button>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <h2>No apps available</h2>
+            <p>Check back soon for more solutions!</p>
+        </div>
+    {% endif %}
+</div>
+
+<div class="footer">
+    <p>&copy; 2025 Solutions Dashboard. All rights reserved.</p>
+</div>
+
+</body>
+</html>
