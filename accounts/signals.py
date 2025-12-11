@@ -1,9 +1,11 @@
 from allauth.account.signals import user_logged_in
 from allauth.socialaccount.signals import pre_social_login
+from allauth.socialaccount.exceptions import ImmediateHttpResponse
 from django.dispatch import receiver
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.shortcuts import redirect
+from django.http import HttpResponseRedirect
 from .models import UserProfile, UserCredits
 
 
@@ -22,8 +24,10 @@ def handle_pre_social_login(sender, request, sociallogin, **kwargs):
     email = sociallogin.account.extra_data.get('email', '').lower()
     
     if email and not is_workspace_email(email):
-        messages.error(request, "Only workspace emails are allowed. Personal Gmail accounts are not permitted.")
-        raise ValueError("Only workspace emails are allowed.")
+        # Use ImmediateHttpResponse to gracefully reject and redirect
+        response = redirect('/login/')
+        response['Location'] += '?error=workspace_email_required'
+        raise ImmediateHttpResponse(response)
 
 
 @receiver(user_logged_in)
