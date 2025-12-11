@@ -27,7 +27,6 @@ django-allauth==65.13.1
 django-cors-headers==4.3.1
 django-import-export==3.3.1
 djangorestframework==3.14.0
-dkube-agent==0.0.1
 et_xmlfile==2.0.0
 exceptiongroup==1.1.2
 faiss-cpu==1.7.4
